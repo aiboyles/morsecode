@@ -3,6 +3,10 @@ var alphabet_rev = {};
 var startTime = new Date();
 var endTime = new Date();
 var pressed = 0;
+var inALetter = 0;
+var currentLetter = 1;
+var currentLetterStr = "";
+var currentLetterCode = "";
 
 function toMorseCode(str) {
     var charArray = str.split("");
@@ -78,7 +82,7 @@ function loadReferenceAlphabet() {
     
     
     
-    var myAppend = "<table class='table table-bordered'>";
+    var myAppend = "<table class='table table-condensed table-bordered'>";
     
     for (x in alphabet_rev) {
         myAppend += "<tr><td>" + x + "</td><td>" + toMorseCode(alphabet_rev[x]) + "</td></tr>";
@@ -86,6 +90,17 @@ function loadReferenceAlphabet() {
 
     myAppend += "</table>";
     $("div.reference-alphabet-area").html(myAppend);
+}
+
+function addLetterToDiv() {
+    if (alphabet[currentLetterCode] === undefined)
+    {
+        $(currentLetterStr).append("<div class='letter-print'>?</div>");
+    }
+    else {
+        $(currentLetterStr).append("<div class='letter-print'>" + alphabet[currentLetterCode].toUpperCase() + "</div>");
+    }
+    currentLetterCode = "";
 }
 
 $(document).keydown(function(event) {
@@ -100,8 +115,20 @@ $(document).keydown(function(event) {
         startTime = event.timeStamp;
         console.log("startTime: " + startTime);
         if ((startTime - endTime) > 750) {
-            $("div.code-area").append("<div class='space'></div>");
+            
+            addLetterToDiv();
+            
+            $("").append("<div class='space'></div>");
+            $("div.code-area").append("<div id='letter" + currentLetter + "' class='letter-container'></div>");
+            currentLetterStr = "#letter" + currentLetter;
+            currentLetter++;
         }
+    }
+    if (keyCaptured == 'z')
+    {
+        addLetterToDiv();
+        startTime = 0;
+        endTime = 0;
     }
   }
 });
@@ -115,10 +142,12 @@ $(document).keyup(function(event) {
       var duration = endTime - startTime;
       console.log("duration is: " + duration);
       if (duration < 250) {
-          $("div.code-area").append("<div class='dot'></div>");
+          $(currentLetterStr).append("<div class='dot'></div>");
+          currentLetterCode += "0";
       }
-      else if ((duration > 250)) {
-          $("div.code-area").append("<div class='dash'></div>");
+      else if (duration > 250) {
+          $(currentLetterStr).append("<div class='dash'></div>");
+          currentLetterCode += "1";
       }
   }
   pressed = 0;

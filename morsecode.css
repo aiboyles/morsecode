@@ -6,6 +6,25 @@
     height: 400px;
 }
 
+.letter-container {
+    display: inline-block;
+    position: relative;
+    padding:10px;
+    height:45px;
+    text-align: center;
+}
+
+.letter-print {
+    display: block;
+    margin-top: -5px;
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+    width: 100%;
+    font-family: "Montserrat", Arial, sans-serif;
+    font-size: 20px;
+}
+
 .dot {
     	display: inline-block;
     	position: relative;
@@ -40,3 +59,7 @@
     	width: 36px;
         background-color: #FFFFFF;
     }
+
+.table-custom {
+    padding: 1px;
+}
