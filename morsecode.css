@@ -1,0 +1,42 @@
+.header {
+    background-color: #E0FFE0;
+}
+
+.code-area {
+    height: 400px;
+}
+
+.dot {
+    	display: inline-block;
+    	position: relative;
+    	height: 15px;
+    	width: 15px;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+        background-color: #000099;
+        margin-top:8px;
+        margin-bottom:7px;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
+
+.dash {
+    	display: inline-block;
+    	position: relative;
+    	height: 10px;
+    	width: 30px;
+    	margin-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 2px;
+        margin-right: 2px;
+        background-color: #000099;
+    }
+
+.space {
+    	display: inline-block;
+    	position: relative;
+    	height: 30px;
+    	width: 36px;
+        background-color: #FFFFFF;
+    }
