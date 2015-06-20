@@ -25,6 +25,10 @@
     font-size: 20px;
 }
 
+.instructions-area {
+    margin-bottom: 10px;
+}
+
 .dot {
     	display: inline-block;
     	position: relative;
@@ -60,6 +64,7 @@
         background-color: #FFFFFF;
     }
 
-.table-custom {
-    padding: 1px;
+table tr td {
+    padding: 0px !important;
+    font-size: 18px;
 }

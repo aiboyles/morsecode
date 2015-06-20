@@ -3,11 +3,12 @@ var alphabet_rev = {};
 var startTime = new Date();
 var endTime = new Date();
 var pressed = 0;
-var inALetter = 0;
+
 var currentLetter = 1;
 var currentLetterStr = "";
 var currentLetterCode = "";
 
+// translates string of 1s and 0s to dots and dashes
 function toMorseCode(str) {
     var charArray = str.split("");
     var morseString = "";
@@ -23,6 +24,7 @@ function toMorseCode(str) {
     return morseString;
 }
 
+// loads the reference morse code alphabet table
 function loadReferenceAlphabet() {
     
     // initialize alphabet array
@@ -80,18 +82,22 @@ function loadReferenceAlphabet() {
     alphabet_rev['y'] = '1011';
     alphabet_rev['z'] = '1100';
     
+    var myAppend = "<table class='table table-bordered table-custom'>";
     
-    
-    var myAppend = "<table class='table table-condensed table-bordered'>";
-    
-    for (x in alphabet_rev) {
-        myAppend += "<tr><td>" + x + "</td><td>" + toMorseCode(alphabet_rev[x]) + "</td></tr>";
+    for (j = 0; j < 13; j++) {
+        var k = j + 97;
+        
+        myAppend += "<tr><td style='text-align:center;'>" + String.fromCharCode(k) 
+            + "</td><td>" + toMorseCode(alphabet_rev[String.fromCharCode(k)]) + "</td><td style='text-align:center'>"
+            + String.fromCharCode(k + 13) + "</td><td>" + toMorseCode(alphabet_rev[String.fromCharCode(k + 13)])
+            + "</td></tr>";
     }
 
     myAppend += "</table>";
     $("div.reference-alphabet-area").html(myAppend);
 }
 
+// prints the alphabet letter underneath the morse code letter
 function addLetterToDiv() {
     if (alphabet[currentLetterCode] === undefined)
     {
@@ -104,33 +110,33 @@ function addLetterToDiv() {
 }
 
 $(document).keydown(function(event) {
-  if (pressed) {
-      return;
-  }
-  else {
-    pressed = 1;
-    var keyCaptured = String.fromCharCode(event.keyCode).toLowerCase();
-    if (keyCaptured == 'm')
-    {
-        startTime = event.timeStamp;
-        console.log("startTime: " + startTime);
-        if ((startTime - endTime) > 750) {
-            
+  
+    // does nothing if the key is being held down
+    if (pressed) {
+        return;
+    }
+    else {
+        pressed = 1; // indicates the key is being held down
+        var keyCaptured = String.fromCharCode(event.keyCode).toLowerCase();
+        if (keyCaptured == 'm') {
+            startTime = event.timeStamp;
+            // if there has been a pause, finish off this letter and start a new one
+            if ((startTime - endTime) > 500) {
+                addLetterToDiv();
+                $("").append("<div class='space'></div>");
+                $("div.code-area").append("<div id='letter" + currentLetter + "' class='letter-container'></div>");
+                currentLetterStr = "#letter" + currentLetter;
+                currentLetter++;
+            }
+        }
+        // if the key is z, print the letter beneath the morse code letter
+        if (keyCaptured == 'z')
+        {
             addLetterToDiv();
-            
-            $("").append("<div class='space'></div>");
-            $("div.code-area").append("<div id='letter" + currentLetter + "' class='letter-container'></div>");
-            currentLetterStr = "#letter" + currentLetter;
-            currentLetter++;
+            startTime = 0;
+            endTime = 0;
         }
     }
-    if (keyCaptured == 'z')
-    {
-        addLetterToDiv();
-        startTime = 0;
-        endTime = 0;
-    }
-  }
 });
 
 $(document).keyup(function(event) {
@@ -138,9 +144,7 @@ $(document).keyup(function(event) {
   if (keyCaptured == 'm')
   {
       endTime = event.timeStamp;
-      console.log("endTime: " + endTime);
       var duration = endTime - startTime;
-      console.log("duration is: " + duration);
       if (duration < 250) {
           $(currentLetterStr).append("<div class='dot'></div>");
           currentLetterCode += "0";
@@ -152,7 +156,6 @@ $(document).keyup(function(event) {
   }
   pressed = 0;
 });
-
 
 $(document).ready(function () {
     // load the reference alphabet
